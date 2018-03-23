@@ -8,31 +8,44 @@ class DeltaMush : public ObjectData
 {
 public:
 	virtual Bool Init(GeListNode *node);
-	virtual Bool ModifyObject   (BaseObject *mod, BaseDocument *doc, BaseObject *op, const Matrix &op_mg, const Matrix &mod_mg, Real lod, LONG flags, BaseThread *thread);
-	static NodeData *Alloc(void) { return gNew DeltaMush; }
+    //virtual Bool ModifyObject   (BaseObject *mod, BaseDocument *doc, BaseObject *op, const Matrix &op_mg, const Matrix &mod_mg, Real lod, LONG flags, BaseThread *thread);
+    //changed to C4d native data types from R15 API
+	virtual Bool ModifyObject   (BaseObject *mod, BaseDocument *doc, BaseObject *op, const Matrix &op_mg, const Matrix &mod_mg, Float lod, Int32 flags, BaseThread *thread);
+	//static NodeData *Alloc(void) { return gNew DeltaMush; }
+    //gNew was deprecated with R15, so replaced with NewObj
+    static NodeData *Alloc(void) { return NewObj(DeltaMush);}
 };
 
 Bool DeltaMush::Init(GeListNode *node){
 	BaseObject		*op   = (BaseObject*)node;
 	BaseContainer *data = op->GetDataInstance();
-
-	data->SetLong(ITERATIONS, 5);
+    
+    //data->SetLong(ITERATIONS, 5);
+    //changed to C4D data type SetInt32
+	data->SetInt32(ITERATIONS, 5);
 
 	return true;
 }
 
-Bool DeltaMush::ModifyObject(BaseObject *mod, BaseDocument *doc, BaseObject *op, const Matrix &op_mg, const Matrix &mod_mg, Real lod, LONG flags, BaseThread *thread){
+//Bool DeltaMush::ModifyObject(BaseObject *mod, BaseDocument *doc, BaseObject *op, const Matrix &op_mg, const Matrix &mod_mg, Real lod, LONG flags, BaseThread *thread){
+//changed to C4d native data types from R15 API
+Bool DeltaMush::ModifyObject(BaseObject *mod, BaseDocument *doc, BaseObject *op, const Matrix &op_mg, const Matrix &mod_mg, Float lod, Int32 flags, BaseThread *thread){
 	if (!(op->IsInstanceOf(Opolygon))) {
 		return TRUE;
 	}
 
-	Real		w;
-	SReal		*weight=NULL;
+    //Real        w;
+    //SReal        *weight=NULL;
+    //changed to C4d native data types from R15 API
+	Float		w;
+	Float32		*weight=NULL;
 	weight = ToPoint(op)->CalcVertexMap(mod);
 
 	BaseContainer *data = mod->GetDataInstance();
 
-	long iterations=data->GetLong(ITERATIONS);
+    //long iterations=data->GetLong(ITERATIONS);
+    //changed to C4d native data types from R15 API
+	long iterations=data->GetInt32(ITERATIONS);
 
 
 	
