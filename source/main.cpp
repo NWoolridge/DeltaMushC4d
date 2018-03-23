@@ -18,7 +18,7 @@ Bool RegisterDeltaMush(void);
  {
  }
 
- Bool PluginMessage(LONG id, void *data)
+ Bool PluginMessage(Int32 id, void *data) //LONG changed to Int32
  { switch (id)
 	{
 	case C4DPL_INIT_SYS:
@@ -28,6 +28,3 @@ Bool RegisterDeltaMush(void);
 	}
    return FALSE;
  }
-
-
-
